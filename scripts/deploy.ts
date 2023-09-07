@@ -1,28 +1,57 @@
-import { ethers } from "hardhat";
+import { ethers, network } from "hardhat";
+import type { CoreProxy } from "@synthetixio/v3-contracts/build/mainnet/CoreProxy";
+
+export type CoreProxyType = CoreProxy;
+
+export async function importCoreProxy(chainName: string) {
+  switch (chainName) {
+    case "mainnet":
+      return import("@synthetixio/v3-contracts/build/mainnet/CoreProxy");
+    case "goerli":
+      return import("@synthetixio/v3-contracts/build/goerli/CoreProxy");
+    case "optimism-mainnet":
+      return import(
+        "@synthetixio/v3-contracts/build/optimism-mainnet/CoreProxy"
+      );
+    case "optimism-goerli":
+      return import(
+        "@synthetixio/v3-contracts/build/optimism-goerli/CoreProxy"
+      );
+    default:
+      throw new Error(`Unsupported chain ${chainName}`);
+  }
+}
 
 async function main() {
-  const rewardAmount = ethers.parseEther("1000");
-  const signers = await ethers.getSigners();
-  console.log("Signers: ", signers);
+  const { address: CoreProxyAddress } = await importCoreProxy(network.name);
 
-  const collateral = await ethers.deployContract("CollateralMock");
-  await collateral.waitForDeployment();
+  const rewardAmount = 1234567890123456789012345678901234567890n;
+  const [signer] = await ethers.getSigners();
 
-  console.log(`Collateral deployed`, collateral);
+  const collateralFactory = await ethers.getContractFactory("CollateralMock");
+  const Collateral = await collateralFactory.connect(signer).deploy();
 
-  await collateral.initialize("Fake Reward", "FAKE", 6);
+  await (
+    await Collateral.initialize("Fake Collateral Token", "FAKE", 18)
+  ).wait();
 
-  const rewards = await ethers.deployContract("ExampleRewardsDistributor");
-  await rewards.waitForDeployment();
+  const rewards = await ethers.getContractFactory("ExampleRewardsDistributor");
 
-  // Initalize rewards with the core proxy
-  await rewards.initialize(
-    process.env.CORE_PROXY_ADDRESS as string,
-    collateral.getAddress(),
-    "Example Rewards"
+  const RewardsDistributor = await rewards
+    .connect(signer)
+    .deploy(
+      CoreProxyAddress,
+      Collateral.getAddress(),
+      "Example Rewards Distributor V3"
+    );
+
+  // Mint collateral tokens to RewardsDistributor
+  await Collateral.mint(RewardsDistributor.getAddress(), rewardAmount);
+
+  console.log(
+    `Rewards Distributor deployed`,
+    await RewardsDistributor.getAddress()
   );
-
-  console.log(`Rewards deployed`, rewards);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

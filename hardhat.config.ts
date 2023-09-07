@@ -7,9 +7,10 @@ dotenv.config();
 const config: HardhatUserConfig = {
   solidity: "0.8.19",
   networks: {
-    cannon: {
-      url: `http://127.0.0.1:8545`,
+    "optimism-goerli": {
+      url: process.env.RPC_URL as string,
       accounts: [process.env.PRIVATE_KEY as string],
+      gasPrice: 1000000000,
     },
   },
 };

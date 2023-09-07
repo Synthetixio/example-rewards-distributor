@@ -806,6 +806,11 @@
   dependencies:
     antlr4ts "^0.5.0-alpha.4"
 
+"@synthetixio/v3-contracts@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@synthetixio/v3-contracts/-/v3-contracts-3.1.0.tgz#73149ee27b568e1b4a5e548f63a0b36fd842cb46"
+  integrity sha512-dJVN+WCdKoo1/BZfoK5S2jcE0tZuS/9pEaaQLpSTrLuBJpHRbjWTPr8QJvamREiNq2PqFOydKAd0bB8bVGIeZw==
+
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@tsconfig/node10/-/node10-1.0.9.tgz#df4907fc07a886922637b15e02d4cebc4c0021b2"

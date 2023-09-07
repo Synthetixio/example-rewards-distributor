@@ -14,7 +14,7 @@ contract ExampleRewardsDistributor is IRewardDistributor {
 
     bool public shouldFailPayout;
 
-    function initialize(address rewardManager, address token_, string memory name_) public {
+    constructor(address rewardManager, address token_, string memory name_) {
         _rewardManager = rewardManager;
         _token = token_;
         _name = name_;

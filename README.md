@@ -1,13 +1,14 @@
-# Sample Hardhat Project
+# Deploying a Synthetix V3 Rewards Distributor
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This project demonstrates the deployment of a Synthetix V3 Rewards distributor.
 
-Try running some of the following tasks:
+Update environment variables
+
+```
+  mv .env.example .env
+```
 
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
+npx hardhat compile
 npx hardhat run scripts/deploy.ts
 ```
