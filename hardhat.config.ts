@@ -9,7 +9,10 @@ const config: HardhatUserConfig = {
   networks: {
     "optimism-goerli": {
       url: process.env.RPC_URL as string,
-      accounts: [process.env.PRIVATE_KEY as string],
+      accounts: [
+        process.env.PRIVATE_KEY as string,
+        process.env.PRIVATE_KEY_DEPLOYER as string,
+      ],
       gasPrice: 1000000000,
     },
   },
